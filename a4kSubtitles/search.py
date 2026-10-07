@@ -345,17 +345,12 @@ def __search(core, service_name, meta, results):
     core.utils.wait_threads(threads)
 
 def search(core, params):
-    meta = core.video.get_meta(core)
+    meta = core.video.get_meta(core, core.utils.unquote(params.get('query', '')))
     core.last_meta = meta
 
     meta.languages = __parse_languages(core, core.utils.unquote(params['languages']).split(','))
     meta.preferredlanguage = core.kodi.parse_language(params['preferredlanguage'])
     core.logger.debug(lambda: core.json.dumps(meta, default=lambda o: '', indent=2))
-
-    if meta.imdb_id == '':
-        core.logger.error('missing imdb id!')
-        core.kodi.notification('IMDB ID is not provided')
-        return
 
     threads = []
     (results, force_search) = __get_last_results(core, meta)

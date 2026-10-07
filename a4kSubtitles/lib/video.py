@@ -73,6 +73,45 @@ def __get_filename(title):
 
     return filename
 
+def __get_release_info(filename):
+    """Return a best-effort title, year, season and episode from a release name."""
+    name = utils.unquote(filename or '')
+    name = name.split('?', 1)[0].split('#', 1)[0]
+    name = os.path.splitext(os.path.basename(name))[0]
+    info = utils.extract_season_episode(name, zfill=0)
+
+    # Remove common release decorations after retaining the useful identifiers.
+    clean = re.sub(r'[._-]+', ' ', name)
+    clean = re.sub(r'\[[^\]]*\]|\([^)]*\)|\{[^}]*\}', ' ', clean)
+    clean = re.sub(r'\bS\d{1,3}\s*(?:E|x)\s*E?\d{1,4}.*$', '', clean, flags=re.IGNORECASE)
+    clean = re.sub(r'\b(?:season\s*\d+|episode\s*\d+|\d{1,2}x\d{1,3})\b.*$', '', clean, flags=re.IGNORECASE)
+    clean = re.sub(r'\b(?:2160p|1080p|720p|480p|web[ .-]?(?:dl|rip)?|bluray|b[dr]rip|remux|hdr|dv|x26[45]|h\.26[45]|hevc|aac|dts|proper|repack)\b.*$', '', clean, flags=re.IGNORECASE)
+    clean = re.sub(r'\s+', ' ', clean).strip(' -_.')
+    year_match = re.search(r'\b((?:19|20)\d{2})\b', name)
+
+    return utils.DictAsObject({
+        'title': clean,
+        'year': year_match.group(1) if year_match else '',
+        'season': info.season or '',
+        'episode': info.episode or '',
+    })
+
+def __apply_query_meta(meta, query):
+    """Use a manual query or release name when Kodi has incomplete metadata."""
+    release = __get_release_info(query)
+    if not release.title:
+        return
+
+    if release.season or release.episode:
+        meta.tvshow = meta.tvshow or release.title
+        meta.season = meta.season or release.season
+        meta.episode = meta.episode or release.episode
+        meta.title = meta.title or release.title
+    else:
+        meta.title = meta.title or release.title
+
+    meta.year = meta.year or release.year
+
 def __scrape_imdb_id(core, meta):
     if meta.title == '' or meta.year == '':
         return
@@ -323,6 +362,7 @@ def __get_basic_info(core):
     meta.tvshow_year = ''
     meta.filename = __get_filename(meta.title)
     meta.filename_without_ext = meta.filename
+    __apply_query_meta(meta, meta.filename)
 
     if meta.imdb_id == '':
         regex_result = re.search(r'.*(tt\d{7,}).*', filename_and_path, re.IGNORECASE)
@@ -342,8 +382,72 @@ def __get_basic_info(core):
 def __is_imdb_id(id: str) -> bool:
     return id.startswith(__imdb_id_prefix)
 
-def get_meta(core):
+def __lookup_tmdb(core, meta):
+    """Resolve a release title through TMDb when Kodi and IMDb cannot identify it.
+
+    TMDb requires a personal API key.  This fallback is deliberately optional so
+    normal Kodi/IMDb searches keep working without an additional account.
+    """
+    api_key = core.kodi.get_setting('tmdb', 'apikey')
+    if not api_key:
+        return
+
+    is_tvshow = bool(meta.tvshow or meta.season or meta.episode)
+    title = meta.tvshow if is_tvshow else meta.title
+    if not title:
+        return
+
+    params = {'api_key': api_key, 'query': title}
+    if meta.year:
+        params['first_air_date_year' if is_tvshow else 'year'] = meta.year
+    response = core.request.execute(core, {
+        'method': 'GET',
+        'url': 'https://api.themoviedb.org/3/search/%s' % ('tv' if is_tvshow else 'movie'),
+        'params': params,
+        'timeout': 10,
+    })
+    if not response or response.status_code != 200:
+        return
+
+    try:
+        results = core.json.loads(response.text).get('results', [])
+        if not results:
+            return
+        result = results[0]
+        meta.tmdb_id = str(result['id'])
+        if is_tvshow:
+            meta.tvshow = result.get('name', meta.tvshow)
+        else:
+            meta.title = result.get('title', meta.title)
+        date = result.get('first_air_date' if is_tvshow else 'release_date', '')
+        meta.year = meta.year or (date[:4] if date else '')
+
+        external = core.request.execute(core, {
+            'method': 'GET',
+            'url': 'https://api.themoviedb.org/3/%s/%s/external_ids' % ('tv' if is_tvshow else 'movie', meta.tmdb_id),
+            'params': {'api_key': api_key},
+            'timeout': 10,
+        })
+        if external and external.status_code == 200:
+            meta.imdb_id = core.json.loads(external.text).get('imdb_id') or ''
+    except:
+        return
+
+def get_meta(core, manual_query=''):
     meta = __get_basic_info(core)
+    meta.tmdb_id = ''
+
+    if manual_query:
+        # A manual query is intentional: do not let stale player metadata win.
+        meta.title = ''
+        meta.tvshow = ''
+        meta.year = ''
+        meta.season = ''
+        meta.episode = ''
+        meta.imdb_id = ''
+        meta.filename = manual_query
+        meta.filename_without_ext = os.path.splitext(manual_query)[0]
+        __apply_query_meta(meta, manual_query)
 
     # Depending on the used scraper, the imdb_id returned by Kodi might not actually be an IMDB ID.
     if meta.imdb_id == '' or not __is_imdb_id(meta.imdb_id):
@@ -362,6 +466,9 @@ def get_meta(core):
                 tvshow_years_cache = cache.get_tvshow_years_cache()
                 tvshow_years_cache[meta.imdb_id] = meta.tvshow_year
                 cache.save_tvshow_years_cache(tvshow_years_cache)
+
+    if meta.imdb_id == '':
+        __lookup_tmdb(core, meta)
 
     if meta.imdb_id != '':
         __update_info_from_imdb(core, meta)

@@ -28,10 +28,13 @@ def build_search_requests(core, service_name, meta):
         if meta.tvshow_year:
             params['year'] = meta.tvshow_year
     else:
-        params.update({
-            'imdb_id': meta.imdb_id,
-            'year': meta.year,
-        })
+        params['year'] = meta.year
+        if meta.tmdb_id:
+            params['tmdb_id'] = meta.tmdb_id
+        elif meta.imdb_id:
+            params['imdb_id'] = meta.imdb_id
+        else:
+            params['film_name'] = meta.title
 
     request = {
         'method': 'GET',

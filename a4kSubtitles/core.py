@@ -48,8 +48,29 @@ def main(handle, paramstring):  # pragma: no cover
 
     params = dict(utils.parse_qsl(paramstring))
     if params['action'] == 'manualsearch':
-        kodi.notification('Manual search is not supported')
-    elif params['action'] == 'search':
+        query = params.get('query', '')
+        if not query:
+            try:
+                query = kodi.xbmcgui.Dialog().input('Search subtitles')
+            except:
+                query = ''
+        if not query:
+            kodi.xbmcplugin.endOfDirectory(handle)
+            return
+
+        languages = params.get('languages', kodi.get_kodi_setting('subtitles.languages'))
+        if not languages:
+            languages = ['English']
+        if not isinstance(languages, str):
+            languages = ','.join(languages)
+        params.update({
+            'action': 'search',
+            'query': query,
+            'languages': languages,
+            'preferredlanguage': params.get('preferredlanguage', kodi.get_kodi_setting('locale.subtitlelanguage') or 'English'),
+        })
+
+    if params['action'] == 'search':
         core.progress_text = ''
         core.progress_dialog = kodi.get_progress_dialog()
 

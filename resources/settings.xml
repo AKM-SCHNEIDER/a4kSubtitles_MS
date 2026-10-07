@@ -39,5 +39,9 @@
         <setting type="lsep" label="33207"/>
         <setting type="sep"/>
         <setting id="subsource.apikey" label="33304" type="text" default=""/>
+        <!-- TMDb (optional fallback for poorly labelled streams and manual searches) -->
+        <setting type="lsep" label="TMDb"/>
+        <setting type="sep"/>
+        <setting id="tmdb.apikey" label="TMDb API key (optional)" type="text" default=""/>
     </category>
 </settings>

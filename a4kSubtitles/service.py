@@ -238,10 +238,6 @@ def start(api):
         if has_subtitles:
             continue
 
-        has_imdb = core.kodi.xbmc.getInfoLabel('VideoPlayer.IMDBNumber')
-        if not has_imdb:
-            continue
-
         if not core.kodi.get_bool_setting('general', 'auto_download'):
             core.kodi.xbmc.executebuiltin('ActivateWindow(SubtitleSearch)')
             continue
