@@ -58,9 +58,9 @@ xbmcaddon = lambda: None
 __addon = lambda: None
 def __get_addon_info(name):
     if name == 'id':
-        return 'service.subtitles.a4ksubtitles'
+        return 'service.subtitles.akmsubtitles'
     elif name == 'name':
-        return 'a4ksubtitles'
+        return 'AKM Subtitles'
     elif name == 'version':
         tree = ElementTree.parse(os.path.join(os.path.dirname(__file__), '..', '..', 'addon.xml'))
         root = tree.getroot()
