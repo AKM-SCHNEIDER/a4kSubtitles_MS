@@ -1,60 +1,65 @@
 <img align="left" width="115px" height="115px" src="icon.png">
 
-# a4kSubtitles
-[![Kodi version](https://img.shields.io/badge/kodi%20versions-20--21-blue)](https://kodi.tv/)
+# AKM Subtitles
 
-### General Status
-[![Background Service](https://github.com/a4k-openproject/a4kSubtitles/actions/workflows/cron-tests-service.yml/badge.svg)](https://github.com/a4k-openproject/a4kSubtitles/actions/workflows/cron-tests-service.yml)
-[![API](https://github.com/a4k-openproject/a4kSubtitles/actions/workflows/cron-tests-api.yml/badge.svg)](https://github.com/a4k-openproject/a4kSubtitles/actions/workflows/cron-tests-api.yml)
-[![Search](https://github.com/a4k-openproject/a4kSubtitles/actions/workflows/cron-tests-search.yml/badge.svg)](https://github.com/a4k-openproject/a4kSubtitles/actions/workflows/cron-tests-search.yml)
-[![TVShows](https://github.com/a4k-openproject/a4kSubtitles/actions/workflows/cron-tests-tvshow.yml/badge.svg)](https://github.com/a4k-openproject/a4kSubtitles/actions/workflows/cron-tests-tvshow.yml)
+[![Kodi version](https://img.shields.io/badge/Kodi-20--21-blue)](https://kodi.tv/)
 
-### Providers Status
-[![Addic7ed](https://github.com/a4k-openproject/a4kSubtitles/actions/workflows/cron-tests-addic7ed.yml/badge.svg)](https://github.com/a4k-openproject/a4kSubtitles/actions/workflows/cron-tests-addic7ed.yml)
-[![BSPlayer](https://github.com/a4k-openproject/a4kSubtitles/actions/workflows/cron-tests-bsplayer.yml/badge.svg)](https://github.com/a4k-openproject/a4kSubtitles/actions/workflows/cron-tests-bsplayer.yml)
-[![OpenSubtitles](https://github.com/a4k-openproject/a4kSubtitles/actions/workflows/cron-tests-opensubtitles.yml/badge.svg)](https://github.com/a4k-openproject/a4kSubtitles/actions/workflows/cron-tests-opensubtitles.yml)
-[![Podnadpisi.NET](https://github.com/a4k-openproject/a4kSubtitles/actions/workflows/cron-tests-podnadpisi.yml/badge.svg)](https://github.com/a4k-openproject/a4kSubtitles/actions/workflows/cron-tests-podnadpisi.yml)
-<!-- [![SubDL](https://github.com/a4k-openproject/a4kSubtitles/actions/workflows/cron-tests-subdl.yml/badge.svg)](https://github.com/a4k-openproject/a4kSubtitles/actions/workflows/cron-tests-subdl.yml) -->
+AKM Subtitles is a multi-source subtitle addon for Kodi. It is an independent,
+side-by-side install of the a4kSubtitles codebase: installing it does not
+replace the original a4kSubtitles addon.
 
-## Description
+## Subtitle providers
 
-Subtitle addon for KODI with support for multiple subtitle services:
-* Addic7ed
-* BSPlayer
-* OpenSubtitles
-* Podnadpisi.NET
-* SubDL
-* SubSource
+- Addic7ed
+- BSPlayer
+- OpenSubtitles
+- Podnadpisi.NET
+- SubDL
+- SubSource
 
-## Configuration
-![configuration](https://media.giphy.com/media/kewuE4BgfOnFin0vEC/source.gif)
+## Improvements in AKM Subtitles
+
+- Uses Kodi's playing-media metadata when it is available.
+- Falls back to parsing a release filename, such as `Some.Show.S02E04.1080p.mkv`,
+  to recover the title, year, season, and episode.
+- Supports manual text searches from Kodi's subtitle search action.
+- Can keep searching when Kodi does not provide an IMDb ID; supported providers
+  receive the available title and episode metadata.
+- Optionally resolves incomplete titles through TMDb. Add a personal TMDb API
+  key in **Add-on settings → Accounts** to enable this fallback.
+- Retains multi-provider searches and file-hash matching where a provider
+  supports them.
 
 ## Installation
 
-Steps to install a4kSubtitles:
-1. Go to the KODI **File manager**.
-2. Click on **Add source**.
-3. The path for the source is https://a4k-openproject.github.io/a4kSubtitles/packages/
-4. (Optional) Name it **a4kSubtitles-repo**.
-5. Head to **Addons**.
-6. Select **Install from zip file**.
-7. When it asks for the location select **a4kSubtitles-repo** and install `a4kSubtitles-repository.zip`.
-8. Go back to **Addons** and select **Install from repository**
-9. Select the **a4kSubtitles** menu item
+A public Kodi repository URL has not been published yet. Until one is available,
+install a ZIP package created from this project through Kodi's **Install from zip
+file** option.
 
-## Preview
-![usage](https://media.giphy.com/media/QTmhgEJTpTPTPxByfj/source.gif)
+Once the repository is published, its copy-and-paste URL and installation steps
+will be listed here.
 
-## Contribution
+## Configuration
 
-Configure hooks for auto update of `addons.xml`:
+Configure provider accounts/API keys under **Add-on settings → Accounts**.
+TMDb is optional, but improves matching for poorly labelled streams and manual
+searches.
+
+## Development
+
+Configure hooks to refresh the generated `packages/addons.xml` manifest:
+
 ```sh
 git config core.hooksPath .githooks
 ```
-## License
 
-MIT
+## Attribution and license
+
+AKM Subtitles is a modified distribution of
+[a4kSubtitles](https://github.com/a4k-openproject/a4kSubtitles) by its original
+authors. It is distributed under the [MIT License](LICENSE); the original
+copyright notice and license are retained.
 
 ## Icon
 
-Logo `quill` by Ramy Wafaa ([RoundIcons](https://roundicons.com))
+Logo `quill` by Ramy Wafaa ([RoundIcons](https://roundicons.com)).
