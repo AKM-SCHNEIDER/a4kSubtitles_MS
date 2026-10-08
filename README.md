@@ -37,7 +37,7 @@ replace the original a4kSubtitles addon.
 #### Method 1: Install from the GitHub Pages ZIP directly
 
 1. Download the repository installer ZIP:
-   https://akm-schneider.github.io/a4kSubtitles_MS/packages/repository.akmsubtitles-1.0.0.zip
+   https://akm-schneider.github.io/a4kSubtitles_MS/packages/
 2. In Kodi, open **Settings → Add-ons → Install from zip file**.
 3. Select the downloaded repository ZIP and install it.
 4. Then go to **Add-ons → Install from repository → AKM Subtitles Repository**.
