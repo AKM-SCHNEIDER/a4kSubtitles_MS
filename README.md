@@ -32,16 +32,44 @@ replace the original a4kSubtitles addon.
 
 ## Installation
 
-A public Kodi repository URL has not been published yet. Until one is available,
-install a ZIP package created from this project through Kodi's **Install from zip
-file** option.
+### Install the Kodi repository
 
-Once the repository is published, its copy-and-paste URL and installation steps
-will be listed here.
+#### Method 1: Install from the GitHub Pages ZIP directly
+
+1. Download the repository installer ZIP:
+   https://akm-schneider.github.io/a4kSubtitles_MS/packages/repository.akmsubtitles-1.0.0.zip
+2. In Kodi, open **Settings → Add-ons → Install from zip file**.
+3. Select the downloaded repository ZIP and install it.
+4. Then go to **Add-ons → Install from repository → AKM Subtitles Repository**.
+5. Install **AKM Subtitles**.
+
+#### Method 2: Add the GitHub Pages folder as a Kodi source
+
+1. In Kodi, open **Settings → File manager**.
+2. Select **Add source**.
+3. Select **<None>** and paste:
+   https://akm-schneider.github.io/a4kSubtitles_MS/packages/
+4. Give the source a name, for example: **AKM Repo**.
+5. Go to **Add-ons → Install from zip file**.
+6. Open the source you just added and select:
+   `repository.akmsubtitles-1.0.0.zip`
+7. Install the repository.
+8. Then go to **Add-ons → Install from repository → AKM Subtitles Repository**.
+9. Install **AKM Subtitles**.
+
+### Install the add-on ZIP directly
+
+If you already have the package locally, you can also install the add-on ZIP from
+Kodi using **Install from zip file**:
+
+- `service.subtitles.akmsubtitles-3.24.3.zip`
+
+The repository installer is the recommended method, because it keeps the add-on
+updated through the GitHub Pages repository.
 
 ## Configuration
 
-Configure provider accounts/API keys under **Add-on settings → Accounts**.
+Configure provider accounts/API keys under **Add-on settings → Accounts** for SubDl, Subsource. and you will need the username and password for the Opensubtitles.
 TMDb is optional, but improves matching for poorly labelled streams and manual
 searches.
 
