@@ -11,9 +11,9 @@ addon=$(tail -n +2 addon.xml)
 repository_addon=$(cat repository.akmsubtitles/addon.xml)
 
 printf "$prefix\n$addon\n$repository_addon\n$suffix\n" > packages/addons.xml
-cat packages/addons.xml | shasum | awk '{print $1}' > packages/addons.xml.crc
+tr -d '\r' < packages/addons.xml | shasum | awk '{print $1}' > packages/addons.xml.crc
 truncate -s -1 packages/addons.xml.crc
-cat packages/addons.xml | md5sum | awk '{print $1}' > packages/addons.xml.md5
+tr -d '\r' < packages/addons.xml | md5sum | awk '{print $1}' > packages/addons.xml.md5
 truncate -s -1 packages/addons.xml.md5
 
 python ./scripts/update_changelog.py
