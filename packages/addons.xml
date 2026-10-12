@@ -383,25 +383,25 @@
         </news>
     </extension>
 </addon>
-    <addon id="repository.akmsubtitles"
-         name="AKM Subtitles Repository"
-         version="2.0.0"
-         provider-name="AKM Schneider">
-      <extension point="xbmc.addon.repository">
+<addon id="repository.akmsubtitles"
+       name="AKM Subtitles Repository"
+       version="2.0.1"
+       provider-name="AKM Schneider">
+    <extension point="xbmc.addon.repository">
         <dir>
-          <info compressed="false">https://akm-schneider.github.io/a4kSubtitles_MS/packages/addons.xml</info>
-          <checksum>https://akm-schneider.github.io/a4kSubtitles_MS/packages/addons.xml.md5</checksum>
-          <datadir zip="true">https://akm-schneider.github.io/a4kSubtitles_MS/packages/</datadir>
-          <hashes>false</hashes>
+            <info compressed="false">https://akm-schneider.github.io/a4kSubtitles_MS/packages/addons.xml</info>
+            <checksum>https://akm-schneider.github.io/a4kSubtitles_MS/packages/addons.xml.md5.txt</checksum>
+            <datadir zip="true">https://akm-schneider.github.io/a4kSubtitles_MS/packages/</datadir>
+            <hashes>false</hashes>
         </dir>
-      </extension>
-      <extension point="xbmc.addon.metadata">
+    </extension>
+    <extension point="xbmc.addon.metadata">
         <summary lang="en">AKM Subtitles add-on repository</summary>
         <description lang="en">Official repository for the AKM Subtitles Kodi add-on.</description>
         <platform>all</platform>
         <license>MIT License</license>
         <website>https://github.com/AKM-SCHNEIDER/a4kSubtitles_MS</website>
         <source>https://github.com/AKM-SCHNEIDER/a4kSubtitles_MS</source>
-      </extension>
-    </addon>
+    </extension>
+</addon>
 </addons>

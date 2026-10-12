@@ -15,6 +15,7 @@ tr -d '\r' < packages/addons.xml | shasum | awk '{print $1}' > packages/addons.x
 truncate -s -1 packages/addons.xml.crc
 tr -d '\r' < packages/addons.xml | md5sum | awk '{print $1}' > packages/addons.xml.md5
 truncate -s -1 packages/addons.xml.md5
+cp packages/addons.xml.md5 packages/addons.xml.md5.txt
 
 python ./scripts/update_changelog.py
 
