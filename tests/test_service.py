@@ -238,3 +238,21 @@ def test_service_auto_download():
     assert executebuiltin_spy.call_count == 0
     assert setsubtitles_spy.call_count == 1
     setsubtitles_spy.called_with(expected_download_result)
+
+
+def test_manualsearch_uses_searchstring_param(monkeypatch):
+    import a4kSubtitles.core as a4k_core
+
+    calls = []
+
+    def fake_search(core, params):
+        calls.append(dict(params))
+
+    monkeypatch.setattr(a4k_core, 'search', fake_search)
+    monkeypatch.setattr(a4k_core.kodi, 'get_kodi_setting', lambda *args, **kwargs: '')
+
+    a4k_core.main(123, 'action=manualsearch&searchstring=The%20Matrix&languages=English')
+
+    assert len(calls) == 1
+    assert calls[0]['query'] == 'The Matrix'
+    assert calls[0]['action'] == 'search'

@@ -48,14 +48,16 @@ def main(handle, paramstring):  # pragma: no cover
 
     params = dict(utils.parse_qsl(paramstring))
     if params['action'] == 'manualsearch':
-        query = params.get('query', '')
+        query = params.get('query') or params.get('searchstring') or params.get('search_string') or ''
         if not query:
             try:
                 query = kodi.xbmcgui.Dialog().input('Search subtitles')
             except:
                 query = ''
         if not query:
-            kodi.xbmcplugin.endOfDirectory(handle)
+            end_of_directory = getattr(kodi.xbmcplugin, 'endOfDirectory', None)
+            if callable(end_of_directory):
+                end_of_directory(handle)
             return
 
         languages = params.get('languages', kodi.get_kodi_setting('subtitles.languages'))
@@ -84,4 +86,6 @@ def main(handle, paramstring):  # pragma: no cover
         params['action_args'] = json.loads(params['action_args'])
         download(core, params)
 
-    kodi.xbmcplugin.endOfDirectory(handle)
+    end_of_directory = getattr(kodi.xbmcplugin, 'endOfDirectory', None)
+    if callable(end_of_directory):
+        end_of_directory(handle)
