@@ -52,7 +52,7 @@ replace the original a4kSubtitles addon.
 4. Give the source a name, for example: **AKM Repo**.
 5. Go to **Add-ons → Install from zip file**.
 6. Open the source you just added and select:
-   `repository.akmsubtitles-1.0.0.zip`
+  `repository.akmsubtitles-2.0.0.zip`
 7. Install the repository.
 8. Then go to **Add-ons → Install from repository → AKM Subtitles Repository**.
 9. Install **AKM Subtitles**.
@@ -62,7 +62,7 @@ replace the original a4kSubtitles addon.
 If you already have the package locally, you can also install the add-on ZIP from
 Kodi using **Install from zip file**:
 
-- `service.subtitles.akmsubtitles-3.24.3.zip`
+- `service.subtitles.akmsubtitles-3.24.4.zip`
 
 The repository installer is the recommended method, because it keeps the add-on
 updated through the GitHub Pages repository.
