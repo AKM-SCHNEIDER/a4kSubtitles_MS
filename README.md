@@ -62,7 +62,7 @@ replace the original a4kSubtitles addon.
 If you already have the package locally, you can also install the add-on ZIP from
 Kodi using **Install from zip file**:
 
-- `service.subtitles.akmsubtitles-3.24.4.zip`
+- `service.subtitles.akmsubtitles-3.24.5.zip`
 
 The repository installer is the recommended method, because it keeps the add-on
 updated through the GitHub Pages repository.
