@@ -12,10 +12,10 @@ on:
 jobs:
   update-data:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.TOKEN_ }}
 
     - name: setup-python
       uses: actions/setup-python@v5
@@ -35,5 +35,10 @@ jobs:
       run: |
         git config --global user.email "47229722+newt-sc@users.noreply.github.com"
         git config --global user.name "newt-sc"
-        git commit -am "chore: update data" || true
-        git push || true
+        git add a4kSubtitles/data/addic7ed/tvshows.json
+        if git diff --cached --quiet; then
+          echo "No Addic7ed data changes."
+          exit 0
+        fi
+        git commit -m "chore: update Addic7ed data"
+        git push

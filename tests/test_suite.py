@@ -206,16 +206,14 @@ def test_search_missing_imdb_id():
     a4ksubtitles_api = api.A4kSubtitlesApi({'kodi': True})
     __remove_all_cache(a4ksubtitles_api)
 
-    log_error_spy = utils.spy_fn(a4ksubtitles_api.core.logger, 'error')
-
     params = {
         'languages': 'English',
         'preferredlanguage': '',
     }
-    a4ksubtitles_api.search(params, {}, {})
+    results = a4ksubtitles_api.search(params, {}, {})
 
-    log_error_spy.restore()
-    log_error_spy.called_with('missing imdb id!')
+    assert results == []
+    assert a4ksubtitles_api.core.last_meta.imdb_id == ''
 
 def test_tvshow_year_scraping_with_episode_imdb_id():
     a4ksubtitles_api = api.A4kSubtitlesApi({'kodi': True})
